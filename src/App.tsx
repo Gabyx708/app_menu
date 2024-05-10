@@ -10,8 +10,8 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
+import { home,cart,settings,calendar} from 'ionicons/icons';
+import Home from './pages/home/Home';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 
@@ -40,7 +40,7 @@ import '@ionic/react/css/display.css';
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+//import '@ionic/react/css/palettes/dark.system.css';  <-- DARK MODE OFF
 
 /* Theme variables */
 import './theme/variables.css';
@@ -52,8 +52,8 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
+          <Route exact path="/home">
+            <Home />
           </Route>
           <Route exact path="/tab2">
             <Tab2 />
@@ -64,19 +64,26 @@ const App: React.FC = () => (
           <Route exact path="/">
             <Redirect to="/tab1" />
           </Route>
+          <Route exact path="/">
+            <Redirect to="/waiter" />
+          </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
+          <IonTabButton tab="tab1" href="/home">
+            <IonIcon aria-hidden="true" icon={home} />
+            <IonLabel>home</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon aria-hidden="true" icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
+            <IonIcon aria-hidden="true" icon={cart} />
+            <IonLabel>pedidos</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Tab 3</IonLabel>
+            <IonIcon aria-hidden="true" icon={calendar} />
+            <IonLabel>futuros</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="tab4" href="/waiter">
+            <IonIcon aria-hidden="true" icon={settings}/>
+            <IonLabel>mesero</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
