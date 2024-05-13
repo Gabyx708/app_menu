@@ -8,7 +8,7 @@ import {
 
 const MonthlyExpense: React.FC = () => {
 
-  const total = 40000;
+  const total = 47000;
   const month = 'mayo';
 
   const formattedTotal = total.toLocaleString("en-US", {

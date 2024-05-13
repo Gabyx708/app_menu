@@ -1,0 +1,17 @@
+.ion-content-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+.ion-card{
+    margin-top: 30vh;
+}
+
+.ion-icon-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  

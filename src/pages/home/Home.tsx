@@ -11,22 +11,31 @@ import {
   IonCardTitle,
   IonIcon,
   IonCardContent,
+  useIonViewDidEnter,
 } from "@ionic/react";
 
 import { personCircle } from "ionicons/icons";
 import MonthlyExpense from "../../components/monthlyExpenseComponent/MonthlyExpenseComponents";
 import NextMenu from "../../components/nextMenuComponent/NextMenu";
 import ExistOrder from "./ExistOrderComponent";
+import { getUser } from "../../services/userService";
+import { showTabBar } from "../../utils/tabBarVisibility";
+import { getNextMenuAvailable } from "../../services/menuService";
 
 const Home: React.FC = () => {
-  const nickname = "John Doe";
+
+  const nickname = getUser()?.nickName ? getUser()?.nickName : '<default>';
+
+  useIonViewDidEnter(() => {
+    showTabBar(); //visible tabBar
+  })
 
   return (
     <IonPage className="ion-page fullscreen">
       <IonHeader></IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense"></IonHeader>
-      </IonContent>
+      
 
       <IonCard>
         <IonCardHeader
@@ -46,9 +55,10 @@ const Home: React.FC = () => {
         </IonCardHeader>
       </IonCard>
 
-      <MonthlyExpense></MonthlyExpense>
-      <ExistOrder></ExistOrder>
-      <NextMenu></NextMenu>
+      <MonthlyExpense/>
+      <ExistOrder/>
+      <NextMenu/>
+      </IonContent>
     </IonPage>
   );
 };

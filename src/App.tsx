@@ -44,43 +44,50 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Login from './pages/login/Login';
+import { useState } from 'react';
 
 setupIonicReact();
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+
+  const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
+
+  return(
   <IonApp>
     <IonReactRouter>
       <IonTabs>
+        
         <IonRouterOutlet>
           <Route exact path="/home">
             <Home />
           </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/waiter" />
-          </Route>
+          <Route exact path="/" render={()=> <Home/>}/>
+          <Route path="/orders" render={()=><Tab2/>}/>
+          <Route path="/future" render={()=><Tab3/>}/>
+          <Route path="/waiter" render={()=><Tab3/>}/>
+          <Route path="/home" render={()=><Home/>}/>
+          <Route path="/login" render={()=><Login/>}/>
         </IonRouterOutlet>
+
+
+
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/home">
             <IonIcon aria-hidden="true" icon={home} />
             <IonLabel>home</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
+
+          <IonTabButton tab="tab2" href="/orders">
             <IonIcon aria-hidden="true" icon={cart} />
             <IonLabel>pedidos</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
+
+          <IonTabButton tab="tab3" href="/future">
             <IonIcon aria-hidden="true" icon={calendar} />
             <IonLabel>futuros</IonLabel>
           </IonTabButton>
+
           <IonTabButton tab="tab4" href="/waiter">
             <IonIcon aria-hidden="true" icon={settings}/>
             <IonLabel>mesero</IonLabel>
@@ -88,7 +95,7 @@ const App: React.FC = () => (
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
-  </IonApp>
-);
+  </IonApp>)
+};
 
 export default App;
