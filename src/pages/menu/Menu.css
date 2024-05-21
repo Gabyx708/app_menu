@@ -1,0 +1,11 @@
+/* Asegúrate de que este archivo esté incluido en tu proyecto */
+ion-alert .custom-cancel-button {
+    --color: red;  /* Usa las variables CSS de Ionic */
+    --font-weight: bold; /* Usa las variables CSS de Ionic */
+  }
+  
+  ion-alert .custom-confirm-button {
+    --color: green;  /* Usa las variables CSS de Ionic */
+    --font-weight: bold; /* Usa las variables CSS de Ionic */
+  }
+  

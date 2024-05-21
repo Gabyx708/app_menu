@@ -3,14 +3,10 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonCard,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonIcon,
-  IonCardContent,
   useIonViewDidEnter,
 } from "@ionic/react";
 
@@ -20,7 +16,6 @@ import NextMenu from "../../components/nextMenuComponent/NextMenu";
 import ExistOrder from "./ExistOrderComponent";
 import { getUser } from "../../services/userService";
 import { showTabBar } from "../../utils/tabBarVisibility";
-import { getNextMenuAvailable } from "../../services/menuService";
 
 const Home: React.FC = () => {
 

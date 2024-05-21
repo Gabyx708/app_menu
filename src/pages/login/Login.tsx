@@ -54,8 +54,8 @@ const Login:React.FC = () => {
         
         try{
             const user = await loginUser(userName!,password!);
-            const userSave = saveUser(user);
-
+            const userSave = await saveUser(user);
+            
             //redirect to /home
             history.push('/home');
 

@@ -3,7 +3,7 @@ import { warning,checkmarkCircle } from "ionicons/icons";
 
 const ExistOrder: React.FC = () => {
 
-  let exist: Boolean = true;
+  let exist: Boolean = false;
   let text: String = "Ya has hecho tu pedido para este menu!";
   let actualIcon:string = checkmarkCircle;
   let color = "success"

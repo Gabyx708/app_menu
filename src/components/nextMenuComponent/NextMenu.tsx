@@ -4,14 +4,17 @@ import {
   IonCardHeader,
   IonButton,
   IonIcon,
+  IonNavLink,
+  IonNav,
 } from "@ionic/react";
 
 import { restaurant } from "ionicons/icons";
 import exampleMenu from "../../test/exampleMenu";
 import formatDate from "../../utils/formatDate";
 import formatDateWithTime from "../../utils/formatDateWithHour";
-import { getNextMenuAvailable } from "../../services/menuService";
+import { getNextMenuAvailable, saveActualMenu } from "../../services/menuService";
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 
 const NextMenu: React.FC = () => {
 
@@ -24,8 +27,8 @@ const NextMenu: React.FC = () => {
         
         if(response.status != 404){
             setMenu(response.data);
+            saveActualMenu(response.data); //guarda el menu actual en memoria
         }
-        
       } catch (error) {
         console.error('Error al obtener el menú:', error);
       }
@@ -55,6 +58,11 @@ export default NextMenu;
 
 const MenuData  = ({ nextMenu }: { nextMenu: Menu }) => {
   
+  const history = useHistory();
+  const handleButtonClick = () => {
+    history.push('/menu');
+  }
+
   let options: MenuItem[] = nextMenu.options;
 
   return <>
@@ -81,6 +89,6 @@ const MenuData  = ({ nextMenu }: { nextMenu: Menu }) => {
           </IonCard>
         ))}
         <div style={{ textAlign: "center", marginTop: "5px" }}>
-          <IonButton>IR A PEDIR</IonButton>
+            <IonButton onClick={handleButtonClick}>IR A PEDIR</IonButton>
         </div></>
       }

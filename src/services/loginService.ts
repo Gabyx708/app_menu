@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setAuthToken } from "./axiosInstance";
+import axiosInstance, { setAuthToken } from "./http/axiosInstance";
 import { getUser } from "./userService";
 
 const loginUser = async(username:string,password:string):Promise<SignInResponse> => {
@@ -12,9 +12,9 @@ const loginUser = async(username:string,password:string):Promise<SignInResponse>
     };
 
     try {
-        const response = await axios.post<SignInResponse>(endpoint, userData);
+        const response = await axiosInstance.post<SignInResponse>(endpoint, userData);
         
-        setAuthToken(getUser()?.token!); //save token in axios instance
+        setAuthToken(response.data.token); //save token in axios instance
 
         return response.data; 
     } catch (error) {
