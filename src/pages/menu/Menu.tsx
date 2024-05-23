@@ -13,7 +13,7 @@ import {
   IonLabel,
   IonPage,
 } from "@ionic/react";
-import { getActualMenu } from "../../services/menuService";
+import { getActualMenu } from "../../services/local/menuService";
 import formatDate from "../../utils/formatDate";
 import formatDateWithTime from "../../utils/formatDateWithHour";
 import { fastFood } from "ionicons/icons";

@@ -4,17 +4,16 @@ import {
   IonCardHeader,
   IonButton,
   IonIcon,
-  IonNavLink,
-  IonNav,
+  IonCardTitle,
 } from "@ionic/react";
 
-import { restaurant } from "ionicons/icons";
-import exampleMenu from "../../test/exampleMenu";
+import { alertCircleOutline, restaurant } from "ionicons/icons";
 import formatDate from "../../utils/formatDate";
 import formatDateWithTime from "../../utils/formatDateWithHour";
-import { getNextMenuAvailable, saveActualMenu } from "../../services/menuService";
+import { getNextMenuAvailable, saveActualMenu } from "../../services/local/menuService";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import "../../css/general.css";
 
 const NextMenu: React.FC = () => {
 
@@ -44,10 +43,11 @@ const NextMenu: React.FC = () => {
       <IonCardHeader style={{ textAlign: "center" }}>
         <div>
           <h2 style={{fontWeight: "bold",color: "black"}}>Proximo Menu</h2>
+          <hr className="line-divider"/>
         </div>
       </IonCardHeader>
       <IonCardContent>
-            { menu != null ? <MenuData nextMenu={menu}/> : <h3>NO HAY MENU</h3>}
+            { menu != null ? <MenuData nextMenu={menu}/> : <NotMenu/>}
       </IonCardContent>
     </IonCard>
   );
@@ -92,3 +92,14 @@ const MenuData  = ({ nextMenu }: { nextMenu: Menu }) => {
             <IonButton onClick={handleButtonClick}>IR A PEDIR</IonButton>
         </div></>
       }
+
+const NotMenu = () => {
+  return <IonCard>
+    <IonCardContent>
+      <div style={{textAlign:"center",fontSize: 30}}>
+        <IonIcon icon={alertCircleOutline}></IonIcon>
+        <p>NO ENCONTRAMOS NIGUN MENU</p>
+      </div>
+    </IonCardContent>
+  </IonCard>
+}

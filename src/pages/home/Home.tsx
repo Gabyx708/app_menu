@@ -14,7 +14,7 @@ import { personCircle } from "ionicons/icons";
 import MonthlyExpense from "../../components/monthlyExpenseComponent/MonthlyExpenseComponents";
 import NextMenu from "../../components/nextMenuComponent/NextMenu";
 import ExistOrder from "./ExistOrderComponent";
-import { getUser } from "../../services/userService";
+import { getUser } from "../../services/local/userService";
 import { showTabBar } from "../../utils/tabBarVisibility";
 
 const Home: React.FC = () => {
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
             float: "left"
           }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center"}}>
             <IonIcon icon={personCircle} size="large" color="primary"></IonIcon>
             <IonCardTitle style={{ marginLeft: "18px" }}>
               Hola {nickname}!

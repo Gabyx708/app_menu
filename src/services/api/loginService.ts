@@ -1,6 +1,6 @@
 import axios from "axios";
-import axiosInstance, { setAuthToken } from "./http/axiosInstance";
-import { getUser } from "./userService";
+import axiosInstance, { setAuthToken } from "../http/axiosInstance";
+import { getUser } from "../local/userService";
 
 const loginUser = async(username:string,password:string):Promise<SignInResponse> => {
 

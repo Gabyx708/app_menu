@@ -13,8 +13,8 @@ import { useState } from 'react';
 import { hideTabBar } from '../../utils/tabBarVisibility';
 import './Login.css';
 import { restaurant } from "ionicons/icons";
-import loginUser from "../../services/loginService";
-import { saveUser } from "../../services/userService";
+import loginUser from "../../services/api/loginService";
+import { saveUser } from "../../services/local/userService";
 import { useHistory } from "react-router";
 
 

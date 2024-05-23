@@ -1,19 +1,29 @@
 import { IonCard, IonCardContent, IonCardSubtitle, IonCardTitle, IonIcon } from "@ionic/react";
 import { warning,checkmarkCircle } from "ionicons/icons";
+import { getUser } from "../../services/local/userService";
+import { getActualMenu } from "../../services/local/menuService";
+import { useEffect, useState } from "react";
+import { getUserOrderByMenu } from "../../services/api/orderService";
 
 const ExistOrder: React.FC = () => {
 
-  let exist: Boolean = false;
-  let text: String = "Ya has hecho tu pedido para este menu!";
-  let actualIcon:string = checkmarkCircle;
-  let color = "success"
+  const [rederStatus,setRenderStatus] = useState(false);
+  const [color, setColor] = useState("warning");
+  const [text, setText] = useState("¡Aún no has hecho un pedido para este menú!");
+  const [actualIcon, setActualIcon] = useState<string>(warning);
 
-  if(!exist)
-    {
-        text = 'aun no has hecho un pedido para este menu!'
-        color = 'warning'
-        actualIcon = warning
-    }
+  let idUser = getUser()?.id;
+  let idMenu = getActualMenu()?.id;
+
+  useEffect(()=>{
+    const getOrder = async () =>{
+      const response = await getUserOrderByMenu('f','f');
+      let x = response
+      console.log('consulta'+x.status);
+    };
+
+    getOrder();
+  },[]);
 
   return (
     <IonCard>
