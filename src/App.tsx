@@ -62,7 +62,7 @@ const App: React.FC = () => {
           <Route exact path="/home">
             <Home />
           </Route>
-          <Route exact path="/" render={()=> <Home/>}/>
+          <Route exact path="/" render={()=> <Login/>}/>
           <Route path="/orders" render={()=><Tab3/>}/>
           <Route path="/future" render={()=><Tab3/>}/>
           <Route path="/waiter" render={()=><Tab3/>}/>

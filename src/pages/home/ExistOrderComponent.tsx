@@ -4,6 +4,8 @@ import { getUser } from "../../services/local/userService";
 import { getActualMenu } from "../../services/local/menuService";
 import { useEffect, useState } from "react";
 import { getUserOrderByMenu } from "../../services/api/orderService";
+import axios from "axios";
+import { saveOrder } from "../../services/local/orderService";
 
 const ExistOrder: React.FC = () => {
 
@@ -15,15 +17,25 @@ const ExistOrder: React.FC = () => {
   let idUser = getUser()?.id;
   let idMenu = getActualMenu()?.id;
 
-  useEffect(()=>{
-    const getOrder = async () =>{
-      const response = await getUserOrderByMenu('f','f');
-      let x = response
-      console.log('consulta'+x.status);
+  useEffect(() => {
+    const getOrder = async () => {
+      try {
+        const response = await getUserOrderByMenu(idUser!, idMenu!);
+
+        if (response.status == 200) setColor("success");
+        setActualIcon(checkmarkCircle);
+        setText("Ya has hecho un pedido para este menu!");
+        saveOrder(response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          let codigo = error.response.status;
+          console.log(codigo);
+        }
+      }
     };
 
     getOrder();
-  },[]);
+  }, []);
 
   return (
     <IonCard>
