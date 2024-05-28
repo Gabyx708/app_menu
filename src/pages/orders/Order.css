@@ -1,0 +1,40 @@
+/* Order.css */
+
+.date-picker-container {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 10px;
+  }
+  
+  .date-picker-container ion-label {
+    margin-right: 10px;
+    white-space: nowrap;
+  }
+  
+  .date-picker-container ion-datetime-button {
+    width: 190px; /* Ancho fijo para el botón de fecha */
+    overflow: hidden; /* Ocultar texto desbordante */
+    text-overflow: ellipsis; /* Añadir puntos suspensivos para el texto desbordante */
+  }
+  
+  .fetch-orders-button {
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination-controls ion-button {
+    margin: 0 10px;
+  }
+  
+  .page-info {
+    margin: 0 10px;
+    font-size: 16px;
+  }
+  

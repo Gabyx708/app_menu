@@ -25,7 +25,6 @@ const ExistOrder: React.FC = () => {
         if (response.status == 200) setColor("success");
         setActualIcon(checkmarkCircle);
         setText("Ya has hecho un pedido para este menu!");
-        saveOrder(response.data);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           let codigo = error.response.status;

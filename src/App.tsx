@@ -12,7 +12,6 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { home,cart,settings,calendar} from 'ionicons/icons';
 import Home from './pages/home/Home';
-import Tab3 from './pages/Tab3';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -46,6 +45,7 @@ import './theme/variables.css';
 import Login from './pages/login/Login';
 import { useState } from 'react';
 import Menu from './pages/menu/Menu';
+import Order from './pages/orders/Orders';
 
 setupIonicReact();
 
@@ -63,9 +63,9 @@ const App: React.FC = () => {
             <Home />
           </Route>
           <Route exact path="/" render={()=> <Login/>}/>
-          <Route path="/orders" render={()=><Tab3/>}/>
-          <Route path="/future" render={()=><Tab3/>}/>
-          <Route path="/waiter" render={()=><Tab3/>}/>
+          <Route path="/orders" render={()=><Order/>}/>
+          <Route path="/future" render={()=><Order/>}/>
+          <Route path="/waiter" render={()=><Order/>}/>
           <Route path="/home" render={()=><Home/>}/>
           <Route path="/login" render={()=><Login/>}/>
           <Route path="/menu" render={()=><Menu/>}/>
