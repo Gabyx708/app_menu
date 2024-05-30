@@ -130,7 +130,6 @@ const OrderItem = ({ order }: { order: OrderSummary }) => {
   const icon = icons[index];
   const state = states[index];
   const color = colors[index];
-  console.log(state);
 
   return (
     <IonCard>

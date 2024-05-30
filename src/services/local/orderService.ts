@@ -1,12 +1,12 @@
-import { OrderResponse } from "../../types/typeOrderResponse";
+import { OrderByIdResponse } from "../../types/typeOrderByIdResponse";
 
-export const saveOrder = (order:OrderResponse) => {
+export const saveOrder = (order:OrderByIdResponse) => {
 
     sessionStorage.setItem('order',JSON.stringify(order));
     return order;
 }
 
-export const getOrder = (): OrderResponse | null => {
+export const getOrder = (): OrderByIdResponse | null => {
     
   const orderStringfy = sessionStorage.getItem("order");
   if (orderStringfy) {
@@ -15,3 +15,7 @@ export const getOrder = (): OrderResponse | null => {
 
   return null;
 };
+
+export const clearOrder = () =>{
+  sessionStorage.removeItem("order");
+}

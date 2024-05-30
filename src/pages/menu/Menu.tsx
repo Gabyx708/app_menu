@@ -18,17 +18,40 @@ import formatDate from "../../utils/formatDate";
 import formatDateWithTime from "../../utils/formatDateWithHour";
 import { fastFood } from "ionicons/icons";
 import formatCurrency from "../../utils/formatCurrency";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OrderRequest } from "../../types/typeOrderRequest";
 import { getUser } from "../../services/local/userService";
 import { makeOrder } from "../../services/api/orderService";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { saveOrder } from "../../services/local/orderService";
+import { getOrder, saveOrder } from "../../services/local/orderService";
+import CancelOrder from "./CancelOrder";
 
 const Menu: React.FC = () => {
   const menuInMemory: Menu | null = getActualMenu();
+  const order = getOrder();
   const options = menuInMemory?.options;
+
+  const [cancelEnable,SetCancelEnable] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (order?.menu == menuInMemory?.id && order?.state.id != "-1") {
+      SetCancelEnable(true);
+    }
+  });
+
+  if(cancelEnable)
+  {
+      return (
+        <IonPage className="ion-page fullscreen">
+          <IonHeader></IonHeader>
+          <IonContent fullscreen>
+                <CancelOrder/>
+          </IonContent>
+        </IonPage>
+      );
+  }
+
   return (
     <IonPage className="ion-page fullscreen">
       <IonHeader></IonHeader>
@@ -57,13 +80,13 @@ const MenuInformation = ({ menu }: { menu: Menu }) => {
           </IonCardHeader>
         </IonCard>
         <IonCard>
-          <IonCardHeader>cierra el:{formatDate(menu.closeDate)}</IonCardHeader>
+          <IonCardHeader>cierra el:{formatDateWithTime(menu.closeDate)}</IonCardHeader>
         </IonCard>
       </div>
       <IonCard>
         <IonCardTitle>
           <h6 style={{ textAlign: "center" }}>
-            se come el: {formatDate(menu.eatingDate)}
+            se come el: {formatDateWithTime(menu.eatingDate)}
           </h6>
         </IonCardTitle>
       </IonCard>
