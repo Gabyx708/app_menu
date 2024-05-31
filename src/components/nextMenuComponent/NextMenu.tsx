@@ -10,14 +10,15 @@ import {
 import { alertCircleOutline, restaurant } from "ionicons/icons";
 import formatDate from "../../utils/formatDate";
 import formatDateWithTime from "../../utils/formatDateWithHour";
-import { getNextMenuAvailable, saveActualMenu } from "../../services/local/menuService";
+import { getNextMenuAvailable, saveActualMenu } from "../../services/api/menuService";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import "../../css/general.css";
+import { useAppContext } from "../../context/AppContext";
 
 const NextMenu: React.FC = () => {
 
-  const [menu,setMenu] = useState<Menu | null>(null);
+  const {actualMenu,setActualMenu} = useAppContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,8 +26,7 @@ const NextMenu: React.FC = () => {
         const response = await getNextMenuAvailable();
         
         if(response.status != 404){
-            setMenu(response.data);
-            saveActualMenu(response.data); //guarda el menu actual en memoria
+            setActualMenu(response.data);
         }
       } catch (error) {
         console.error('Error al obtener el menú:', error);
@@ -47,7 +47,7 @@ const NextMenu: React.FC = () => {
         </div>
       </IonCardHeader>
       <IonCardContent>
-            { menu != null ? <MenuData nextMenu={menu}/> : <NotMenu/>}
+            { actualMenu != null ? <MenuData nextMenu={actualMenu}/> : <NotMenu/>}
       </IonCardContent>
     </IonCard>
   );

@@ -14,12 +14,13 @@ import { personCircle } from "ionicons/icons";
 import MonthlyExpense from "../../components/monthlyExpenseComponent/MonthlyExpenseComponents";
 import NextMenu from "../../components/nextMenuComponent/NextMenu";
 import ExistOrder from "./ExistOrderComponent";
-import { getUser } from "../../services/local/userService";
 import { showTabBar } from "../../utils/tabBarVisibility";
+import { useAppContext } from "../../context/AppContext";
 
 const Home: React.FC = () => {
 
-  const nickname = getUser()?.nickName ? getUser()?.nickName : '<default>';
+  const {actualSession} = useAppContext();
+  const nickname = actualSession?.nickName ? actualSession?.nickName : '<default>';
 
   useIonViewDidEnter(() => {
     showTabBar(); //visible tabBar

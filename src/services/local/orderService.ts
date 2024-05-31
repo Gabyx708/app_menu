@@ -1,12 +1,12 @@
-import { OrderByIdResponse } from "../../types/typeOrderByIdResponse";
+import { OrderByIdResponse } from "../../types/order/typeOrderByIdResponse";
 
-export const saveOrder = (order:OrderByIdResponse) => {
+export const saveOrderInMemory = (order:OrderByIdResponse) => {
 
     sessionStorage.setItem('order',JSON.stringify(order));
     return order;
 }
 
-export const getOrder = (): OrderByIdResponse | null => {
+export const getOrderInMemory = (): OrderByIdResponse | null => {
     
   const orderStringfy = sessionStorage.getItem("order");
   if (orderStringfy) {

@@ -46,6 +46,8 @@ import Login from './pages/login/Login';
 import { useState } from 'react';
 import Menu from './pages/menu/Menu';
 import Order from './pages/orders/Orders';
+import Futures from './pages/futures/Futures';
+import CommingSoon from './pages/comming_soon/CommingSoon';
 
 setupIonicReact();
 
@@ -64,8 +66,8 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/" render={()=> <Login/>}/>
           <Route path="/orders" render={()=><Order/>}/>
-          <Route path="/future" render={()=><Order/>}/>
-          <Route path="/waiter" render={()=><Order/>}/>
+          <Route path="/future" render={()=><Futures/>}/>
+          <Route path="/waiter" render={()=><CommingSoon/>}/>
           <Route path="/home" render={()=><Home/>}/>
           <Route path="/login" render={()=><Login/>}/>
           <Route path="/menu" render={()=><Menu/>}/>

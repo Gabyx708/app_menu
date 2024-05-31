@@ -9,36 +9,35 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
   IonPage,
 } from "@ionic/react";
-import { getActualMenu } from "../../services/local/menuService";
-import formatDate from "../../utils/formatDate";
+
 import formatDateWithTime from "../../utils/formatDateWithHour";
 import { fastFood } from "ionicons/icons";
 import formatCurrency from "../../utils/formatCurrency";
 import { useEffect, useState } from "react";
-import { OrderRequest } from "../../types/typeOrderRequest";
-import { getUser } from "../../services/local/userService";
-import { makeOrder } from "../../services/api/orderService";
+import { OrderRequest } from "../../types/order/typeOrderRequest";
+import { getOrderById, makeOrder } from "../../services/api/orderService";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { getOrder, saveOrder } from "../../services/local/orderService";
 import CancelOrder from "./CancelOrder";
+import { useAppContext } from "../../context/AppContext";
 
 const Menu: React.FC = () => {
-  const menuInMemory: Menu | null = getActualMenu();
-  const order = getOrder();
-  const options = menuInMemory?.options;
+   const {actualOrder,actualMenu} = useAppContext();
+  const options = actualMenu?.options;
 
-  const [cancelEnable,SetCancelEnable] = useState<boolean>(false);
+  const [cancelEnable,SetCancelEnable] = useState<boolean>(true);
 
   useEffect(() => {
-    if (order?.menu == menuInMemory?.id && order?.state.id != "-1") {
-      SetCancelEnable(true);
+    console.log("www")
+    if (actualMenu && actualOrder 
+        && actualMenu.id === actualOrder.menu 
+        && actualOrder.state.description == "cancelled")
+    {
+      SetCancelEnable(false);
     }
-  });
+  },[actualOrder]);
 
   if(cancelEnable)
   {
@@ -51,14 +50,14 @@ const Menu: React.FC = () => {
         </IonPage>
       );
   }
-
+console.log(cancelEnable)
   return (
     <IonPage className="ion-page fullscreen">
       <IonHeader></IonHeader>
       <IonContent fullscreen>
-        <MenuInformation menu={menuInMemory!} />
+        <MenuInformation menu={actualMenu!} />
         {options?.map((option, key) => (
-          <MenuOption key={key} idMenu={menuInMemory?.id!} option={option} />
+          <MenuOption key={key} idMenu={actualMenu?.id!} option={option} />
         ))}
       </IonContent>
     </IonPage>
@@ -96,6 +95,8 @@ const MenuInformation = ({ menu }: { menu: Menu }) => {
 
 const MenuOption = ({option,idMenu,}: {option: MenuItem;idMenu: string;}) => {
 
+  const {actualSession} = useAppContext();
+  const {setActualOrder} = useAppContext();
   const icon = fastFood;
   const [isOpen, setIsOpen] = useState(false);
   const [descriptOrder, setDescriptionOrder] = useState("<default>");
@@ -113,7 +114,7 @@ const MenuOption = ({option,idMenu,}: {option: MenuItem;idMenu: string;}) => {
 
     const newOrder: OrderRequest = {
       idMenu: idMenu,
-      idUser: getUser()?.id!,
+      idUser: actualSession?.id!,
       items: [
         {
           idDish: `${option.idDish}`,
@@ -127,8 +128,10 @@ const MenuOption = ({option,idMenu,}: {option: MenuItem;idMenu: string;}) => {
     try {
       const response = await makeOrder(newOrder);
       if (response.status === 201) {
+        
+        const newOrder = await getOrderById(response.data.id);
+        setActualOrder(newOrder);
         setIsSuccessAlertOpen(true);
-        saveOrder(response.data);
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

@@ -1,93 +1,77 @@
-import React, { useEffect, useState } from "react";
-import {
-  IonCard,
-  IonCardContent,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonIcon,
-  IonSpinner,
-} from "@ionic/react";
-import { warning, checkmarkCircle } from "ionicons/icons";
-import { getUser } from "../../services/local/userService";
-import { getActualMenu } from "../../services/local/menuService";
-import { getOrderById, getUserOrderByMenu } from "../../services/api/orderService";
+import { IonCard, IonCardContent, IonCardSubtitle, IonIcon } from "@ionic/react";
+import { warning, checkmarkCircle, informationCircle } from "ionicons/icons";
+import { useAppContext } from "../../context/AppContext";
+import { useEffect, useState } from "react";
+import { getUserOrderByMenu } from "../../services/api/orderService";
+import { OrderByIdResponse } from "../../types/order/typeOrderByIdResponse";
 import axios from "axios";
-import { saveOrder } from "../../services/local/orderService";
-import { OrderResponse } from "../../types/typeOrderResponse";
 
 const ExistOrder: React.FC = () => {
+  const { actualOrder, setActualOrder, actualMenu, actualSession } = useAppContext();
   const [loading, setLoading] = useState(true);
   const [color, setColor] = useState("warning");
   const [text, setText] = useState("¡Aún no has hecho un pedido para este menú!");
   const [actualIcon, setActualIcon] = useState<string>(warning);
 
-  const idUser = getUser()?.id;
-  let idMenu = getActualMenu()?.id;
+  const idUser = actualSession?.id;
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      idMenu = getActualMenu()?.id;
-      if (idMenu) {
-        clearInterval(interval);
-        const getOrder = async () => {
-          try {
-            const response = await getUserOrderByMenu(idUser!, idMenu!);
-            if (response.status === 200) {
-
-              let sortedOrders = response.data.sort((a: OrderResponse, b: OrderResponse) => {
-                const dateA = new Date(a.date);
-                const dateB = new Date(b.date);
-              
-                return dateB.getTime() - dateA.getTime();
-              });
-
-              let lastOrderEntry = sortedOrders.find(i => i.state.id != -1);
-              
-              if(lastOrderEntry){
-                const lastOrder = await getOrderById(lastOrderEntry.id);
-
-                if (lastOrder.menu == idMenu || lastOrder.state.id != "-1") {
-                  setColor("success");
-                  setActualIcon(checkmarkCircle);
-                  setText("¡Ya has hecho un pedido para este menú!");
-                  saveOrder(lastOrder);
-                }
-              }
-              
+    if (!actualMenu) {
+      setLoading(false);
+      setActualIcon(informationCircle);
+      setColor("primary");
+      setText("¡Vaya, no hay ningún menú!");
+      return;
+    }
+  
+    console.log("Checking actualMenu:", actualMenu);
+  
+    const getOrder = async () => {
+      try {
+        const response = await getUserOrderByMenu(idUser!, actualMenu.id);
+        if (response.status === 200) {
+          let listOrders: OrderByIdResponse[] = response.data;
+  
+          listOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  
+          const lastOrder = listOrders[0];
+          
+          // Verificar si la última orden es diferente a la actual
+          if (!actualOrder || lastOrder.id !== actualOrder.id) {
+            setActualOrder(lastOrder);
+            console.log("actual order", actualOrder);
+  
+            if (lastOrder.menu === actualMenu.id && lastOrder.state.id !== -1) {
+              setActualIcon(checkmarkCircle);
+              setColor("success");
+              setText("¡Ya has hecho un pedido para este menú!");
             }
-          } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-              console.log(error.response.status);
-            }
-          } finally {
-            setLoading(false);
           }
-        };
-        getOrder();
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          console.log("Error al obtener la orden", error.response.status);
+        } else {
+          console.log("Error desconocido", error);
+        }
+      } finally {
+        setLoading(false);
       }
-    }, 1000); 
-    return () => clearInterval(interval);
-  }, []);
+    };
+  
+    getOrder();
+  }, [actualMenu,actualOrder]); // Solo se ejecuta si actualMenu o actualOrder cambian
+   // Dependencias: actualMenu, idUser, actualOrder, setActualOrder
 
   if (loading) {
-    return (
-      <IonCard>
-        <IonCardContent>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <IonSpinner name="crescent" />
-          </div>
-        </IonCardContent>
-      </IonCard>
-    );
+    return <div>Loading...</div>;
   }
 
   return (
     <IonCard>
       <IonCardContent>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <IonCardSubtitle style={{ marginRight: "18px", textAlign: "justify" }}>
-            {text}
-          </IonCardSubtitle>
+          <IonCardSubtitle style={{ marginRight: "18px", textAlign: "justify" }}>{text}</IonCardSubtitle>
           <IonIcon icon={actualIcon} color={color} size="large"></IonIcon>
         </div>
       </IonCardContent>

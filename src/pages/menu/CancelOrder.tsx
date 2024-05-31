@@ -1,28 +1,31 @@
 import { IonAlert, IonButton, IonCard, IonCardContent, IonIcon, IonItem, IonList } from "@ionic/react";
-import { clearOrder, getOrder } from "../../services/local/orderService";
+import { clearOrder, getOrderInMemory } from "../../services/local/orderService";
 import { checkmarkCircle } from "ionicons/icons";
 import formatDateWithTime from "../../utils/formatDateWithHour";
-import { Item } from "../../types/typeOrderResponse";
+import { Item } from "../../types/order/typeOrderResponse";
 import formatCurrency from "../../utils/formatCurrency";
 import "../../css/general.css";
 import { useState } from "react";
-import { cancelOrder } from "../../services/api/orderService";
+import { cancelOrder, getOrderById } from "../../services/api/orderService";
 import { useHistory } from "react-router";
+import { useAppContext } from "../../context/AppContext";
 
 const CancelOrder: React.FC = () => {
-  const order = getOrder();
+  const {actualOrder,setActualOrder} = useAppContext();
   const [isOpen,setIsOpen] = useState<boolean>(false);
   const history = useHistory();
 
-  if (!order) {
+  if (!actualOrder) {
     return <div>ocurrio un problema</div>;
   }
 
   const handlerCancelation = async () =>{
       
       try{
-        const response = await cancelOrder(order.id);
         clearOrder();
+        const response = await cancelOrder(actualOrder.id);
+        const renewOrder = await getOrderById(actualOrder.id);
+        setActualOrder(renewOrder);
         history.push("/home");
     }catch(error){
         console.log("error")
@@ -65,14 +68,14 @@ const CancelOrder: React.FC = () => {
         </IonItem>
 
         <IonItem>
-          <h5>Este pedido se hizo el {formatDateWithTime(order.date)}</h5>
+          <h5>Este pedido se hizo el {formatDateWithTime(actualOrder.date)}</h5>
         </IonItem>
         <IonItem>
           <IonCardContent>
             <div style={{ textAlign: "center" }}>
               <h1>RESUMEN</h1>
               <hr className="line-divider" style={{ marginBottom: 30 }} />
-              {order.items.map((item, key) => (
+              {actualOrder.items.map((item, key) => (
                 <ItemComponent key={key} item={item} />
               ))}
               <IonButton color={"danger"} onClick={()=>setIsOpen(true)}>CANCELAR</IonButton>

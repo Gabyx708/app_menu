@@ -21,7 +21,7 @@ interface Item {
 }
 
 interface State {
-  id: string;
+  id: number;
   description: string;
 }
 

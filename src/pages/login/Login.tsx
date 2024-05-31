@@ -16,11 +16,14 @@ import { restaurant } from "ionicons/icons";
 import loginUser from "../../services/api/loginService";
 import { saveUser } from "../../services/local/userService";
 import { useHistory } from "react-router";
+import { useAppContext } from "../../context/AppContext";
+import { setAuthToken } from "../../services/http/axiosInstance";
 
 
 const Login:React.FC = () => {
     
     const history = useHistory();
+    const {actualSession,setActualSession} = useAppContext();
     
     useIonViewDidEnter(() => {
         hideTabBar(); //esconder barra de navegacion
@@ -54,7 +57,8 @@ const Login:React.FC = () => {
         
         try{
             const user = await loginUser(userName!,password!);
-            const userSave = await saveUser(user);
+            await setActualSession(user);
+            await setAuthToken(user.token);
             
             //redirect to /home
             history.push('/home');

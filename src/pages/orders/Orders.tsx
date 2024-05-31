@@ -13,7 +13,7 @@ import {
 } from "@ionic/react";
 import { getUserOrders } from "../../services/api/orderService";
 import { useEffect, useState } from "react";
-import { OrderSummary } from "../../types/typeOrdersPage";
+import { OrderSummary } from "../../types/order/typeOrdersPage";
 import {
   checkmarkCircle,
   closeCircle,
@@ -22,8 +22,12 @@ import {
 import formatDateWithTime from "../../utils/formatDateWithHour";
 import "../../css/general.css";
 import "./Order.css";
+import { useAppContext } from "../../context/AppContext";
 
 const Order: React.FC = () => {
+
+    const {actualSession,actualOrder} = useAppContext();
+
     const [orders, setOrders] = useState<OrderSummary[]>([]);
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
@@ -32,16 +36,16 @@ const Order: React.FC = () => {
   
     useEffect(() => {
       const fetchOrdersInitial = async () => {
-        let response = await getUserOrders(null, null, pageIndex);
+        let response = await getUserOrders(actualSession?.id!,null, null, pageIndex);
         setOrders(response.page.orders);
         setPageIndex(response.page.index);
         setTotalPages(response.page.totalPages);
       };
       fetchOrdersInitial();
-    }, [pageIndex]);
+    }, [pageIndex,actualOrder]);
   
     const handleFetchOrders = async () => {
-      let response = await getUserOrders(startDate, endDate, pageIndex);
+      let response = await getUserOrders(actualSession?.id!,startDate, endDate, pageIndex);
       setOrders(response.page.orders);
       setPageIndex(response.page.index);
       setTotalPages(response.page.totalPages);
