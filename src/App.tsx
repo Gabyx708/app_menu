@@ -49,7 +49,10 @@ import Order from './pages/orders/Orders';
 import Futures from './pages/futures/Futures';
 import CommingSoon from './pages/comming_soon/CommingSoon';
 
-setupIonicReact();
+setupIonicReact({
+  rippleEffect: false,
+  mode: 'md'
+});
 
 const App: React.FC = () => {
 

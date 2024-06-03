@@ -23,10 +23,14 @@ const CancelOrder: React.FC = () => {
       
       try{
         clearOrder();
-        const response = await cancelOrder(actualOrder.id);
-        const renewOrder = await getOrderById(actualOrder.id);
-        setActualOrder(renewOrder);
-        history.push("/home");
+
+        const idOrder = actualOrder.id;
+        await cancelOrder(actualOrder.id);
+        setActualOrder(null!);
+
+        const updateOrder = await getOrderById(idOrder);
+        setActualOrder(updateOrder);
+
     }catch(error){
         console.log("error")
     }
@@ -45,6 +49,7 @@ const CancelOrder: React.FC = () => {
             cssClass: "custom-cancel-button",
             handler: () => {
               handlerCancelation();
+              setIsOpen(false);
             },
           },
         ]}

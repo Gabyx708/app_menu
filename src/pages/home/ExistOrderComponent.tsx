@@ -1,10 +1,17 @@
-import { IonCard, IonCardContent, IonCardSubtitle, IonIcon } from "@ionic/react";
-import { warning, checkmarkCircle, informationCircle } from "ionicons/icons";
-import { useAppContext } from "../../context/AppContext";
+import {
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonIcon,
+} from "@ionic/react";
 import { useEffect, useState } from "react";
+import { useAppContext } from "../../context/AppContext";
+import { informationCircle, checkmarkCircle, warning } from "ionicons/icons";
 import { getUserOrderByMenu } from "../../services/api/orderService";
-import { OrderByIdResponse } from "../../types/order/typeOrderByIdResponse";
 import axios from "axios";
+import { OrderByIdResponse } from "../../types/order/typeOrderByIdResponse";
 
 const ExistOrder: React.FC = () => {
   const { actualOrder, setActualOrder, actualMenu, actualSession } = useAppContext();
@@ -14,43 +21,51 @@ const ExistOrder: React.FC = () => {
   const [actualIcon, setActualIcon] = useState<string>(warning);
 
   const idUser = actualSession?.id;
-
   useEffect(() => {
-    if (!actualMenu) {
-      setLoading(false);
-      setActualIcon(informationCircle);
-      setColor("primary");
-      setText("¡Vaya, no hay ningún menú!");
-      return;
-    }
+    const fetchOrder = async () => {
+      console.log("ejecucion", actualMenu, idUser);
   
-    console.log("Checking actualMenu:", actualMenu);
+      if (!actualMenu || !idUser) {
+        setLoading(false);
+        setActualIcon(informationCircle);
+        setColor("primary");
+        setText("¡Vaya, no hay ningún menú!");
+        return;
+      }
   
-    const getOrder = async () => {
       try {
-        const response = await getUserOrderByMenu(idUser!, actualMenu.id);
+        const response = await getUserOrderByMenu(idUser, actualMenu.id);
+        console.log("se actualizo", response);
+  
         if (response.status === 200) {
-          let listOrders: OrderByIdResponse[] = response.data;
+          const listOrders = response.data.filter((order: OrderByIdResponse) => order.state.id !== -1);
   
-          listOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+          if (listOrders.length > 0) {
+            listOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            const lastOrder = listOrders[0];
   
-          const lastOrder = listOrders[0];
-          
-          // Verificar si la última orden es diferente a la actual
-          if (!actualOrder || lastOrder.id !== actualOrder.id) {
             setActualOrder(lastOrder);
-            console.log("actual order", actualOrder);
   
-            if (lastOrder.menu === actualMenu.id && lastOrder.state.id !== -1) {
+            if (lastOrder.menu === actualMenu.id) {
               setActualIcon(checkmarkCircle);
               setColor("success");
               setText("¡Ya has hecho un pedido para este menú!");
             }
+          } else {
+            setActualIcon(warning);
+            setColor("warning");
+            setText("¡Aún no has hecho un pedido para este menú!");
           }
         }
       } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          console.log("Error al obtener la orden", error.response.status);
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 404) {
+            setActualIcon(warning);
+            setColor("warning");
+            setText("¡Aún no has hecho un pedido para este menú!");
+          } else {
+            console.log("Error al obtener la orden", error.response?.status);
+          }
         } else {
           console.log("Error desconocido", error);
         }
@@ -59,23 +74,23 @@ const ExistOrder: React.FC = () => {
       }
     };
   
-    getOrder();
-  }, [actualMenu,actualOrder]); // Solo se ejecuta si actualMenu o actualOrder cambian
-   // Dependencias: actualMenu, idUser, actualOrder, setActualOrder
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    // Realizar la solicitud solo si actualOrder no está definido o si se ha cambiado actualMenu
+    if (!actualOrder || actualMenu?.id !== actualOrder.menu) {
+      fetchOrder();
+    }
+  }, [actualMenu, actualSession, setActualOrder, actualOrder]);
+  
+  
 
   return (
     <IonCard>
-      <IonCardContent>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <IonCardSubtitle style={{ marginRight: "18px", textAlign: "justify" }}>{text}</IonCardSubtitle>
-          <IonIcon icon={actualIcon} color={color} size="large"></IonIcon>
-        </div>
-      </IonCardContent>
-    </IonCard>
+    <IonCardContent>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <IonCardSubtitle style={{ marginRight: "18px", textAlign: "justify" }}>{text}</IonCardSubtitle>
+        <IonIcon icon={actualIcon} color={color} size="large"></IonIcon>
+      </div>
+    </IonCardContent>
+  </IonCard>
   );
 };
 

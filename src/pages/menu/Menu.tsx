@@ -24,20 +24,22 @@ import CancelOrder from "./CancelOrder";
 import { useAppContext } from "../../context/AppContext";
 
 const Menu: React.FC = () => {
-   const {actualOrder,actualMenu} = useAppContext();
+   const {actualOrder,actualMenu,setActualOrder} = useAppContext();
   const options = actualMenu?.options;
 
-  const [cancelEnable,SetCancelEnable] = useState<boolean>(true);
+  const [cancelEnable,SetCancelEnable] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("www")
-    if (actualMenu && actualOrder 
-        && actualMenu.id === actualOrder.menu 
-        && actualOrder.state.description == "cancelled")
-    {
-      SetCancelEnable(false);
-    }
-  },[actualOrder]);
+    if(actualMenu && actualOrder){
+
+      if (actualMenu.id === actualOrder.menu && actualOrder.state.description !== "cancelled")
+        {
+          SetCancelEnable(true);
+        }else{
+          SetCancelEnable(false);
+        }
+      }
+  },[actualOrder,actualMenu]);
 
   if(cancelEnable)
   {
@@ -50,7 +52,8 @@ const Menu: React.FC = () => {
         </IonPage>
       );
   }
-console.log(cancelEnable)
+
+
   return (
     <IonPage className="ion-page fullscreen">
       <IonHeader></IonHeader>
@@ -129,8 +132,10 @@ const MenuOption = ({option,idMenu,}: {option: MenuItem;idMenu: string;}) => {
       const response = await makeOrder(newOrder);
       if (response.status === 201) {
         
+        setActualOrder(null!);
         const newOrder = await getOrderById(response.data.id);
         setActualOrder(newOrder);
+        
         setIsSuccessAlertOpen(true);
       }
     } catch (error) {
@@ -179,7 +184,7 @@ const MenuOption = ({option,idMenu,}: {option: MenuItem;idMenu: string;}) => {
           {
             text: "OK",
             handler: () => {
-              history.push("/home");
+                setIsSuccessAlertOpen(false);
             },
           },
         ]}
