@@ -1,3 +1,5 @@
 .line-divider {
-    border: 0.1px solid black;
+    border: none;
+    height: 0.1px; /* Establece el grosor de la línea */
+    background-color: black; /* Color de relleno */
 }

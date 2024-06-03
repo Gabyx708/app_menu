@@ -10,6 +10,9 @@ interface AppContextType{
 
     actualMenu: Menu | null;
     setActualMenu: (value:Menu) => void;
+
+    orderDetail: OrderByIdResponse | null;
+    setOrderDetail: (value:OrderByIdResponse) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -17,6 +20,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{children:ReactNode}> = ({children}) => {
 
     const [actualOrder, setActualOrder] = useState<OrderByIdResponse | null>(null);
+    const [orderDetail, setOrderDetail] = useState<OrderByIdResponse | null>(null);
     const [actualSession, setActualSession] = useState<SignInResponse | null>(null);
     const [actualMenu, setActualMenu] = useState<Menu | null>(null);
 
@@ -28,6 +32,8 @@ export const AppProvider: React.FC<{children:ReactNode}> = ({children}) => {
             setActualSession,
             actualMenu,
             setActualMenu,
+            orderDetail,
+            setOrderDetail
           }}>
             {children}
         </AppContext.Provider>

@@ -48,6 +48,7 @@ import Menu from './pages/menu/Menu';
 import Order from './pages/orders/Orders';
 import Futures from './pages/futures/Futures';
 import CommingSoon from './pages/comming_soon/CommingSoon';
+import OrderDetails from './pages/order_detail/OrderDetails';
 
 setupIonicReact({
   rippleEffect: false,
@@ -69,6 +70,7 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/" render={()=> <Login/>}/>
           <Route path="/orders" render={()=><Order/>}/>
+          <Route path="/detail" render={()=><OrderDetails/>}/>
           <Route path="/future" render={()=><Futures/>}/>
           <Route path="/waiter" render={()=><CommingSoon/>}/>
           <Route path="/home" render={()=><Home/>}/>

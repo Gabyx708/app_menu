@@ -4,7 +4,7 @@ export interface OrderResponse {
     user: User
     items: Item[]
     state: State
-    receipt: Receipt
+    receipt: ReceiptOrder
     transitions: Transition[]
   }
   
@@ -24,7 +24,7 @@ export interface OrderResponse {
     description: string
   }
   
-  export interface Receipt {
+  export interface ReceiptOrder {
     id: string
     date: string
     totalPrice: number

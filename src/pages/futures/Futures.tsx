@@ -6,35 +6,43 @@ import { MenuResume } from "../../types/menu/typePageMenuResume";
 import { getDayFromWeek } from "../../utils/getDayFromWeek";
 import formatDateWithTime from "../../utils/formatDateWithHour";
 import formatDate from "../../utils/formatDate";
-import { calendarClearOutline } from "ionicons/icons";
+import { calendarClearOutline, menu } from "ionicons/icons";
 import { useAppContext } from "../../context/AppContext";
 import { useHistory } from "react-router";
+import "./Futures.css";
 
 const Futures: React.FC = () => {
+  const [menues, setMenues] = useState<MenuResume[]>();
+  const actualDate = new Date();
 
-    const [menues,setMenues] = useState<MenuResume[]>();
-    const actualDate = new Date();
+  useEffect(() => {
+    const fetchMenues = async () => {
+      const response = await getFuturesMenues(getMondayFromDate(actualDate));
 
-    useEffect(()=>{
-            const fetchMenues = async ()=>{
-                    const response = await getFuturesMenues(getMondayFromDate(actualDate));
-                    setMenues(response);
-            };
+      let menues = response.sort(
+        (a, b) =>
+          new Date(a.eatingDate).getTime() - new Date(b.eatingDate).getTime()
+      );
+      console.log(menues);
+      setMenues(menues);
+    };
 
-            fetchMenues();
-    },[])
+    fetchMenues();
+  }, []);
+
+
   return (
     <IonPage>
       <IonContent fullscreen>
-        <h2>PROXIMOS MENUES</h2>
-
-        <section>
-            {
-                menues?.map((menu,index)=> (
-                    <MenuFound menu={menu} key={index}/>
-                ))
-            }
-        </section>
+        <div className="menues-container">
+          <h2 style={{textAlign:"center",marginTop: 20}}>PROXIMOS MENUES</h2>
+          <hr  className="line-divider"/>
+          <section>
+            {menues?.map((menu, index) => (
+              <MenuFound menu={menu} key={index} />
+            ))}
+          </section>
+        </div>
       </IonContent>
     </IonPage>
   );
@@ -53,16 +61,17 @@ const MenuFound = ({ menu }: { menu: MenuResume }) => {
     };
 
   return (
-    <div onClick={()=>{handleClick()}}>
+    <div onClick={()=>{handleClick()}} style={{padding: 2}}>
       <IonCard>
         <IonCardContent>
           <div>
             <section>
               <IonCardTitle>
-                <IonIcon icon={calendarClearOutline} />
+                <IonIcon icon={calendarClearOutline} style={{marginRight:10}}/>
                 {getDayFromWeek(new Date(menu.eatingDate)).toLowerCase()}{" "}
                 {formatDate(menu.eatingDate)}
               </IonCardTitle>
+              <hr  className="line-divider"/>
               <IonCardSubtitle>
                 fecha de cierre: {formatDateWithTime(menu.closeDate)}
                 <br></br>

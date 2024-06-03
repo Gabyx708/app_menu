@@ -25,7 +25,7 @@ interface State {
   description: string;
 }
 
-interface Receipt {
+export interface Receipt {
   id: string;
   date: string;
   totalPrice: number;
