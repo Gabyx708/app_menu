@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router';
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // Aquí debes colocar la URL base de tu API
+  baseURL: "http://192.168.0.209:7008/api/v2", // Aquí debes colocar la URL base de tu API
   headers: {
     'Content-Type': 'application/json', // Tipo de contenido JSON por defecto
   },
