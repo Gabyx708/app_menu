@@ -22,6 +22,9 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import CancelOrder from "./CancelOrder";
 import { useAppContext } from "../../context/AppContext";
+import LabelImportantOutlinedIcon from '@mui/icons-material/LabelImportantOutlined';
+import { getDayFromWeek } from "../../utils/getDayFromWeek";
+import formatDate from "../../utils/formatDate";
 
 const Menu: React.FC = () => {
    const {actualOrder,actualMenu,setActualOrder} = useAppContext();
@@ -70,28 +73,15 @@ const Menu: React.FC = () => {
 const MenuInformation = ({ menu }: { menu: Menu }) => {
   return (
     <IonCard>
-      <IonCardHeader>
-        <IonCard>
-          <IonCardHeader>menu: {menu.id}</IonCardHeader>
-        </IonCard>
-      </IonCardHeader>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <IonCard>
-          <IonCardHeader>
-            se abrio el:{formatDateWithTime(menu.uploadDate)}
-          </IonCardHeader>
-        </IonCard>
-        <IonCard>
-          <IonCardHeader>cierra el:{formatDateWithTime(menu.closeDate)}</IonCardHeader>
-        </IonCard>
-      </div>
-      <IonCard>
-        <IonCardTitle>
-          <h6 style={{ textAlign: "center" }}>
-            se come el: {formatDateWithTime(menu.eatingDate)}
-          </h6>
-        </IonCardTitle>
-      </IonCard>
+        <IonCardContent>
+        <IonCardTitle>Sobre este menu</IonCardTitle>
+        <hr className="line-divider"/>
+        <IonCardSubtitle color='danger'>N°: {menu.id.toUpperCase()}</IonCardSubtitle>
+        <p> </p>
+        <IonCardSubtitle>SE COME EL: {getDayFromWeek(new Date(menu.eatingDate)).toUpperCase()} {formatDate(menu.eatingDate).toUpperCase()}
+          </IonCardSubtitle>
+        <IonCardSubtitle>SE CIERRA EL: {formatDateWithTime(menu.closeDate)}</IonCardSubtitle>
+        </IonCardContent>
     </IonCard>
   );
 };
@@ -143,6 +133,10 @@ const MenuOption = ({option,idMenu,}: {option: MenuItem;idMenu: string;}) => {
         let codigo = error.response.status;
 
         if (codigo == 409){
+          setIsErrorAlertOpen(true);
+        }
+
+        if (codigo == 400){
           setIsErrorAlertOpen(true);
         }
       }
@@ -206,18 +200,18 @@ const MenuOption = ({option,idMenu,}: {option: MenuItem;idMenu: string;}) => {
 
       <IonCard onClick={() => {handlerClickOption();}}>
         <IonCardHeader>
-          <IonIcon icon={icon} size="large"></IonIcon>
+          <LabelImportantOutlinedIcon color="primary"/>
           <IonCardTitle>{option.description}</IonCardTitle>
           <IonCardSubtitle>
-            precio: {formatCurrency(option.price)}
+            Precio: {formatCurrency(option.price)}
           </IonCardSubtitle>
         </IonCardHeader>
 
         <IonCardContent>
           <hr style={{ height: 0.2, backgroundColor: "black" }} />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <p>disponibles: {option.stock - option.requested}</p>
-            <p>pedidos: {option.requested}</p>
+            <p >QUEDAN: {option.stock - option.requested}</p>
+            <p>SE PIDIERON: {option.requested}</p>
           </div>
         </IonCardContent>
       </IonCard>

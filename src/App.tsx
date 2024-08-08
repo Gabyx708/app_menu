@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { home,cart,settings,calendar} from 'ionicons/icons';
+import { home,homeOutline,cart,fileTrayFullOutline,hourglassOutline,settings,calendar} from 'ionicons/icons';
 import Home from './pages/home/Home';
 
 /* Core CSS required for Ionic components to work properly */
@@ -82,24 +82,24 @@ const App: React.FC = () => {
 
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/home">
-            <IonIcon aria-hidden="true" icon={home} />
-            <IonLabel>home</IonLabel>
+            <IonIcon aria-hidden="true" icon={homeOutline} />
+            <IonLabel>Home</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="tab2" href="/orders">
-            <IonIcon aria-hidden="true" icon={cart} />
-            <IonLabel>pedidos</IonLabel>
+            <IonIcon aria-hidden="true" icon={fileTrayFullOutline} />
+            <IonLabel>Mis pedidos</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="tab3" href="/future">
-            <IonIcon aria-hidden="true" icon={calendar} />
-            <IonLabel>futuros</IonLabel>
+            <IonIcon aria-hidden="true" icon={hourglassOutline} />
+            <IonLabel>Pedido futuro</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="tab4" href="/waiter">
+          {/* <IonTabButton tab="tab4" href="/waiter">
             <IonIcon aria-hidden="true" icon={settings}/>
             <IonLabel>mesero</IonLabel>
-          </IonTabButton>
+          </IonTabButton> */}
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>

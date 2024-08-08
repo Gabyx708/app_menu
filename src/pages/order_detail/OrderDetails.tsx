@@ -10,6 +10,7 @@ import {
 import { useAppContext } from "../../context/AppContext";
 import {
   archiveSharp,
+  archiveOutline,
   checkmarkCircle,
   closeCircle,
   flame,
@@ -50,7 +51,7 @@ const OrderDetails: React.FC = () => {
           <IonCard>
             <IonCardContent>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <IonIcon icon={archiveSharp} size="large" style={{ marginRight: "10px" }} />
+                <IonIcon icon={archiveOutline} size="large" style={{ marginRight: "10px" }} />
                 <IonCardTitle>estado del pedido: {state}</IonCardTitle>
                 <IonIcon icon={icon} size="large" color={color} />
               </div>
@@ -59,7 +60,7 @@ const OrderDetails: React.FC = () => {
 
           <IonCard>
             <IonCardContent>
-              <IonCardTitle>Informacion</IonCardTitle>
+              <IonCardTitle>Descripcion</IonCardTitle>
               <hr className="line-divider"/>
                   <p>N° de orden: {orderDetail.id}</p>
                   <p>fecha: {formatDateWithTime(orderDetail.date)}</p>
@@ -68,7 +69,7 @@ const OrderDetails: React.FC = () => {
               
           <IonCard>
             <IonCardContent>
-              <IonCardTitle>Tu pedido</IonCardTitle>
+              <IonCardTitle>Detalle</IonCardTitle>
               <hr className="line-divider" />
               {
                 orderDetail.items.map((item, index) => (
@@ -82,7 +83,7 @@ const OrderDetails: React.FC = () => {
             <IonCardContent>
               <IonCardTitle>Recibo</IonCardTitle>
               <hr className="line-divider"/>
-              {!orderDetail.receipt ? <h2>este pedido aun no posee recibo</h2> : <Receipt receipt={orderDetail.receipt}/>}
+              {!orderDetail.receipt ? <h2>este pedido aun no fue facturado</h2> : <Receipt receipt={orderDetail.receipt}/>}
             </IonCardContent>
           </IonCard>
         </div>

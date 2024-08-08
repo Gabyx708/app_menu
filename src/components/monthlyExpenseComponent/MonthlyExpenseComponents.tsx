@@ -4,7 +4,10 @@ import {
   IonCardContent,
   IonCardSubtitle,
   IonCardTitle,
+  IonIcon,
 } from "@ionic/react";
+
+import {walletOutline} from 'ionicons/icons';
 
 const MonthlyExpense: React.FC = () => {
 
@@ -19,8 +22,11 @@ const MonthlyExpense: React.FC = () => {
   return (
     <IonCard>
       <IonCardHeader>
-        <IonCardSubtitle style={{fontSize: "20px"}}>Gastos: {month}</IonCardSubtitle>
-        <IonCardTitle style={{ textAlign: "right", fontWeight: "lighter", fontSize: "30px" }}>
+        <div style={{display: 'inline-flex'}}>
+        <IonIcon icon={walletOutline} color='primary' size="large" style={{ marginRight: "10px" }} />
+        <IonCardSubtitle style={{fontSize: "20px",color: 'black'}}>Gastos del mes de {month}</IonCardSubtitle>
+        </div>
+        <IonCardTitle style={{ textAlign: "right", fontWeight: "bolder", fontSize: "30px"}} color='primary'>
           {formattedTotal}
         </IonCardTitle>
       </IonCardHeader>

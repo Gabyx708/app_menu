@@ -22,7 +22,7 @@ export const getUserOrders = async (idUser:string,startDate:string|null,finalDat
 
     if(startDate == null || finalDate == null)
     {
-        url = `/user/${idUser}/orders?index=${index}&quantity=5`;
+        url = `/user/${idUser}/orders?index=${index}&quantity=4`;
     }
     const response = await axiosInstance.get<OrdersPage>(url);
     return response.data;

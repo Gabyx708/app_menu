@@ -2,7 +2,7 @@ import { IonButton, IonCard, IonCardContent, IonContent, IonDatetime, IonDatetim
 import { getUserOrders, getOrderById } from "../../services/api/orderService";
 import { useEffect, useState } from "react";
 import { OrderSummary } from "../../types/order/typeOrdersPage";
-import { checkmarkCircle, closeCircle, informationCircle } from "ionicons/icons";
+import { checkmarkCircle, closeCircle,arrowBackCircle,arrowForwardCircle, informationCircle,checkboxOutline } from "ionicons/icons";
 import formatDateWithTime from "../../utils/formatDateWithHour";
 import "../../css/general.css";
 import "./Order.css";
@@ -47,7 +47,7 @@ const Orders: React.FC = () => {
     <IonPage>
       <IonHeader></IonHeader>
       <IonContent fullscreen>
-        <div style={{ padding: 15, textAlign: "center" }}>
+        {/* <div style={{ padding: 15, textAlign: "center" }}>
           <div className="date-picker-container">
             <IonLabel>Desde:</IonLabel>
             <IonDatetimeButton datetime="datetime-start"></IonDatetimeButton>
@@ -71,14 +71,14 @@ const Orders: React.FC = () => {
             </IonModal>
           </div>
           <IonButton className="fetch-orders-button" onClick={handleFetchOrders}>Buscar</IonButton>
-        </div>
+        </div> */}
 
         <section>
           <h5 style={{ textAlign: "center" }}>HISTORIAL DE PEDIDOS</h5>
           <hr className="line-divider" style={{ width: 300 }} />
           {orders.length > 0 ? (
             orders.map((order, index) => (
-              <div key={index} onClick={() => handleOrderClick(order.id)}>
+              <div style={{padding: 2}} key={index} onClick={() => handleOrderClick(order.id)}>
                 <OrderItem order={order}></OrderItem>
               </div>
             ))
@@ -97,7 +97,7 @@ const Orders: React.FC = () => {
             onClick={() => setPageIndex(pageIndex > 1 ? pageIndex - 1 : 1)}
             disabled={pageIndex === 1}
           >
-            Anterior
+            <IonIcon icon={arrowBackCircle} size="large"></IonIcon>
           </IonButton>
           <div className="page-info">
             {pageIndex}/{totalPages}
@@ -106,7 +106,7 @@ const Orders: React.FC = () => {
             onClick={() => setPageIndex(pageIndex < totalPages ? pageIndex + 1 : totalPages)}
             disabled={pageIndex === totalPages}
           >
-            Siguiente
+            <IonIcon icon={arrowForwardCircle} size="large"></IonIcon>
           </IonButton>
         </div>
       </IonContent>
@@ -117,7 +117,7 @@ const Orders: React.FC = () => {
 const OrderItem = ({ order }: { order: OrderSummary }) => {
   const colors = ["danger", "primary", "success"];
   const icons = [closeCircle, informationCircle, checkmarkCircle];
-  const states = ["cancelado", "en progreso", "completado"];
+  const states = ["CANCELADO", "EN PROGRESO", "ENTREGADO"];
   let index = order.stateCode;
 
   if (order.stateCode == -1) {
@@ -129,11 +129,15 @@ const OrderItem = ({ order }: { order: OrderSummary }) => {
   const color = colors[index];
 
   return (
-    <IonCard>
+    <IonCard
+    style={{
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)",
+    }}
+    >
       <IonCardContent>
         <div>
-          <h4 style={{ fontWeight: "bolder" }}>PEDIDO N°: {order.id}</h4>
-          <h6>fecha: {formatDateWithTime(order.date)}</h6>
+          <p style={{ fontWeight: "bolder",fontSize: '10pt',color: 'black' }}>N° de orden: {order.id.toUpperCase()}</p>
+          <h3>se pidio el: {formatDateWithTime(order.date)}</h3>
         </div>
         <div style={{ float: "right", textAlign: "center" }}>
           <IonIcon icon={icon} color={color} size="large"></IonIcon>

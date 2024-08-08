@@ -10,7 +10,7 @@ import {
   useIonViewDidEnter,
 } from "@ionic/react";
 
-import { personCircle } from "ionicons/icons";
+import { personCircle,personOutline } from "ionicons/icons";
 import MonthlyExpense from "../../components/monthlyExpenseComponent/MonthlyExpenseComponents";
 import NextMenu from "../../components/nextMenuComponent/NextMenu";
 import ExistOrder from "./ExistOrderComponent";
@@ -31,8 +31,6 @@ const Home: React.FC = () => {
       <IonHeader></IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense"></IonHeader>
-      
-
       <IonCard>
         <IonCardHeader
           style={{
@@ -43,9 +41,9 @@ const Home: React.FC = () => {
           }}
         >
           <div style={{ display: "flex", alignItems: "center"}}>
-            <IonIcon icon={personCircle} size="large" color="primary"></IonIcon>
+            <IonIcon icon={personOutline} size="large" color="primary"></IonIcon>
             <IonCardTitle style={{ marginLeft: "18px" }}>
-              Hola {nickname}!
+              Bienvenid@ , {nickname}!
             </IonCardTitle>
           </div>
         </IonCardHeader>

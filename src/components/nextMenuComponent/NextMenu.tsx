@@ -7,6 +7,7 @@ import {
   IonCardTitle,
 } from "@ionic/react";
 
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import { alertCircleOutline, restaurant } from "ionicons/icons";
 import formatDate from "../../utils/formatDate";
 import formatDateWithTime from "../../utils/formatDateWithHour";
@@ -38,7 +39,8 @@ const NextMenu: React.FC = () => {
     <IonCard>
       <IonCardHeader style={{ textAlign: "center" }}>
         <div>
-          <h2 style={{fontWeight: "bold",color: "black"}}>Proximo Menu</h2>
+          <MenuBookOutlinedIcon color="primary" fontSize="large"/>
+          <h2 style={{fontWeight: "bold",color: "black",padding: 0}}>Menu disponible</h2>
           <hr className="line-divider"/>
         </div>
       </IonCardHeader>
@@ -98,7 +100,7 @@ const NotMenu = () => {
       <IonCardContent>
         <div style={{textAlign:"center",fontSize: 30}}>
           <IonIcon icon={alertCircleOutline}></IonIcon>
-          <p>NO ENCONTRAMOS NIGUN MENU</p>
+          <p>NO ENCONTRAMOS NINGUN MENU</p>
         </div>
       </IonCardContent>
     </IonCard>

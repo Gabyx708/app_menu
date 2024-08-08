@@ -12,7 +12,7 @@ import { IonAlert,
 import { useState } from 'react';
 import { hideTabBar } from '../../utils/tabBarVisibility';
 import './Login.css';
-import { restaurant } from "ionicons/icons";
+import { restaurant,fastFoodOutline } from "ionicons/icons";
 import loginUser from "../../services/api/loginService";
 import { saveUser } from "../../services/local/userService";
 import { useHistory } from "react-router";
@@ -75,7 +75,7 @@ const Login:React.FC = () => {
             <IonCard className='ion-card'>
               <IonCardHeader className="ion-card-header">
               <div className="ion-icon-container">
-              <IonIcon icon={restaurant} style={{fontSize: '4rem',color: 'lightblue'}}/>
+              <IonIcon icon={fastFoodOutline} style={{fontSize: '4rem'}} color="primary"/>
             </div>
               </IonCardHeader>
               <IonCardContent className="ion-card-content">
