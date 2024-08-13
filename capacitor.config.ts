@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'app_menu',
+  appName: 'app_mobile_menu',
   webDir: 'dist',
   android:{
     allowMixedContent: true
