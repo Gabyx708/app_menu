@@ -8,13 +8,41 @@ import {
 } from "@ionic/react";
 
 import {walletOutline} from 'ionicons/icons';
+import { getUserBill } from "../../services/api/userService";
+import { useEffect, useState } from "react";
+import { getMondayFromDate } from "../../utils/getMondayFromDate";
+import { useAppContext } from "../../context/AppContext";
 
 const MonthlyExpense: React.FC = () => {
+  
+  const {actualSession} = useAppContext();
 
-  const total = 8000;
-  const month = 'mayo';
+  const date = new Date();
+  const monthNumber = (date.getMonth()) + 1;
+  const year = date.getFullYear();
+  const idUser = actualSession?.id;
 
-  const formattedTotal = total.toLocaleString("en-US", {
+  const [month,setMonth] = useState('<not month>');
+  const [billMount,setBillMount] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        const response = await getUserBill(idUser!,monthNumber,year);
+        setBillMount(response.data.total);
+        setMonth(response.data.month.monthName);
+
+      } catch (error) {
+        console.error('Error al obtener el menú:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  const formattedTotal = billMount.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
